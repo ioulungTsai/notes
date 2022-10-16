@@ -14,6 +14,9 @@ dayjs.locale('en')
   shadow: true,
 })
 export class FskNotesList {
+  onSelectNote(noteId: number) {
+    console.log(noteId)
+  }
 
   render() {
     const notes = getList().reverse()
@@ -30,7 +33,7 @@ export class FskNotesList {
           </thead>
           <tbody>
             {notes.map((note:any, index:number) =>
-              <tr>
+              <tr onClick={() => this.onSelectNote(note.id)}>
                 <td>{index + 1}</td>
                 <td>
                   {dayjs(note.datetime).format('MMMM D, YYYY h:mm A')}
