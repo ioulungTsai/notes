@@ -20,7 +20,6 @@ export class FskNotesList {
 
     return (
       <div>
-        <div>Notes List</div>
         <table>
           <thead>
             <tr>
