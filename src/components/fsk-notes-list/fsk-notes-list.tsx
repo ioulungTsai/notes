@@ -16,7 +16,7 @@ dayjs.locale('en')
 export class FskNotesList {
 
   render() {
-    const notes = getList()
+    const notes = getList().reverse()
 
     return (
       <div>
