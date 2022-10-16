@@ -9,7 +9,7 @@ export class AppHome {
   render() {
     return (
       <div class="app-home">
-        TODO: call notes-list component
+        <fsk-notes-list></fsk-notes-list>
       </div>
     );
   }
