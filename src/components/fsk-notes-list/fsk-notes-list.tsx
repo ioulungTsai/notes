@@ -1,7 +1,8 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, Event } from '@stencil/core';
 import { getList } from '../../library/NotesData'
 import dayjs from 'dayjs'
 import 'dayjs/locale/en'
+import { EventEmitter } from '@stencil-community/router/dist/types/stencil.core';
 
 dayjs.locale('en')
 
@@ -14,8 +15,10 @@ dayjs.locale('en')
   shadow: true,
 })
 export class FskNotesList {
+  @Event() selectedNote: EventEmitter
   onSelectNote(noteId: number) {
     console.log(noteId)
+    this.selectedNote.emit(noteId)
   }
 
   render() {
@@ -33,7 +36,7 @@ export class FskNotesList {
           </thead>
           <tbody>
             {notes.map((note:any, index:number) =>
-              <tr onClick={() => this.onSelectNote(note.id)}>
+              <tr id={'note'+note.id} onClick={() => this.onSelectNote(note.id)}>
                 <td>{index + 1}</td>
                 <td>
                   {dayjs(note.datetime).format('MMMM D, YYYY h:mm A')}
