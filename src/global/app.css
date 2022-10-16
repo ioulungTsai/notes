@@ -7,6 +7,13 @@
 
   Any global CSS variables should also be applied here.
 */
+:root {
+  --header-background: royalblue;
+}
+
+header {
+  background: var(--header-background);
+}
 
 body {
   margin: 0px;
