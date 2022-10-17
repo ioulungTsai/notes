@@ -15,9 +15,18 @@ dayjs.locale('en')
   shadow: true,
 })
 export class FskNotesList {
+  /**
+   * Sent when user selects a note by click on it
+   * @event
+   */
   @Event() selectedNote: EventEmitter
+
+  /**
+   * Called by HTML row when user clicks on the row
+   * @param noteId - id of the note selected
+   */
   onSelectNote(noteId: number) {
-    console.log(noteId)
+    // console.log(noteId)
     this.selectedNote.emit(noteId)
   }
 
