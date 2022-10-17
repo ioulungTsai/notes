@@ -1,6 +1,6 @@
-import { Component, h, Prop, Event } from '@stencil/core';
+import { Component, h, Prop, Event, Element } from '@stencil/core';
 import { EventEmitter } from '@stencil-community/router/dist/types/stencil.core';
-import { getNote } from '../../library/NotesData'
+import { getNote, saveNote } from '../../library/NotesData'
 
 /**
  * Displays a note
@@ -11,6 +11,8 @@ import { getNote } from '../../library/NotesData'
   shadow: true,
 })
 export class FskNote {
+  @Element() el: HTMLElement
+
   /**
    * HTML property note-id: id of the note to display
    */
@@ -33,7 +35,10 @@ export class FskNote {
    * Called from HTML when user clicks on the save button
    */
   onSave() {
-    console.log('save button')
+    const root = this.el.shadowRoot
+    const title : HTMLInputElement = root.querySelector('#fsk-note-title')
+    const text : HTMLInputElement = root.querySelector('#fsk-note-content')
+    saveNote(this.noteId, title.value, text.value)
   }
 
   render() {
@@ -55,7 +60,7 @@ export class FskNote {
             Close
           </nav>
         </header>
-        <textarea class="fsk-note-content">
+        <textarea id="fsk-note-content">
           {note.text}
         </textarea>
       </div>
