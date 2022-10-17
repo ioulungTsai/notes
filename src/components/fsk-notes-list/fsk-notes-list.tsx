@@ -26,12 +26,11 @@ export class FskNotesList {
    * @param noteId - id of the note selected
    */
   onSelectNote(noteId: number) {
-    // console.log(noteId)
     this.selectedNote.emit(noteId)
   }
 
   render() {
-    const notes = getList().reverse()
+    const notes = [...getList()].reverse()
 
     return (
       <div>
