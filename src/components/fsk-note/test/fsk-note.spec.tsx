@@ -37,12 +37,10 @@ describe('fsk-note', () => {
         <mock:shadow-root>
           <div class="fsk-note">
             <header class="fsk-note-header">
-              <strong>1st Note</strong>
-              <nav class="fsk-note-button">close</nav>
+              <input value="1st Note">
+              <nav class="fsk-note-button">Close</nav>
             </header>
-            <div class="fsk-note-content">
-              Text for my 1st Note
-            </div>
+            <textarea class="fsk-note-content">Text for my 1st Note</textarea>
           </div>
         </mock:shadow-root>
       </fsk-note>

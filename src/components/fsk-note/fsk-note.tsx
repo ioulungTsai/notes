@@ -34,12 +34,16 @@ export class FskNote {
     return (
       <div class="fsk-note">
         <header class="fsk-note-header">
-          <strong>{note.title}</strong>
-          <nav class="fsk-note-button" onClick={() => this.onClose()}>close</nav>
+          <input value={note.title}/>
+          <nav
+            class="fsk-note-button"
+            onClick={() => this.onClose()}>
+            Close
+          </nav>
         </header>
-        <div class="fsk-note-content">
+        <textarea class="fsk-note-content">
           {note.text}
-        </div>
+        </textarea>
       </div>
     );
   }
