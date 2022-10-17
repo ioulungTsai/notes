@@ -8,9 +8,22 @@ const list = JSON.parse(
     {"id":"4","datetime":"2022-10-19T10:13Z","title":"4th Note"}
   ]`)
 
+const text = JSON.parse(
+  `[
+    {"id":"1","text":"Text for my 1st Note"},
+    {"id":"2","text":"Text for my 2nd Note"},
+    {"id":"3","text":"Text for my 3rd Note"},
+    {"id":"4","text":"Text for my 4th Note"}
+  ]`)
+
 jest.mock('../../../library/NotesData.ts', () => ({
-  getNote: (id: number) => { return list[id - 1] }
+  getNote: (id: number) => {
+    const note = list[id-1]
+    const clonedNote = {...note}
+    clonedNote.text = text[id-1].text
+    return(clonedNote)}
 }))
+
 import { FskNote } from '../fsk-note';
 
 describe('fsk-note', () => {
@@ -28,7 +41,7 @@ describe('fsk-note', () => {
               <nav class="fsk-note-button">close</nav>
             </header>
             <div class="fsk-note-content">
-              Now displaying note: 1
+              Text for my 1st Note
             </div>
           </div>
         </mock:shadow-root>

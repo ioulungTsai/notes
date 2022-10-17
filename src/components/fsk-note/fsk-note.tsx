@@ -38,7 +38,7 @@ export class FskNote {
           <nav class="fsk-note-button" onClick={() => this.onClose()}>close</nav>
         </header>
         <div class="fsk-note-content">
-          Now displaying note: {this.noteId}
+          {note.text}
         </div>
       </div>
     );

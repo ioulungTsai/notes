@@ -30,7 +30,7 @@ export class FskNotesList {
   }
 
   render() {
-    const notes = [...getList()].reverse()
+    const notes = getList().reverse()
 
     return (
       <div>

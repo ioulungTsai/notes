@@ -23,7 +23,8 @@ const text = JSON.parse(
  * Return list of all notes
  */
 export function getList() {
-  return (list)
+  const clonedList = [...list]
+  return (clonedList)
 }
 
 /**
