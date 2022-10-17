@@ -8,7 +8,7 @@ const list = JSON.parse(
     {"id":"4","datetime":"2022-10-19T10:13Z","title":"4th Note"}
   ]`)
 
-const saveOut = []
+let saveOut = []
 jest.mock('../../../library/NotesData.ts', () => ({
   getNote: (id: number) => {return(list[id - 1])},
   saveNote: (id: number, title: string, text: string) => {
@@ -57,7 +57,26 @@ describe('fsk-note', () => {
     expect(spy).toHaveBeenCalled()
   })
 
+  it('should emit event when the save button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [FskNote],
+      html: `<fsk-note note-id="1"></fsk-note>`,
+    });
+
+    const button : HTMLElement = (page.root.shadowRoot.querySelector("#fsk-note-save"))
+    const spy = jest.fn()
+    page.win.addEventListener('saveNote', spy)
+
+    button.click()
+    await page.waitForChanges()
+
+    expect(spy).toHaveBeenCalled()
+  })
+
   it('should save the note when the save button clicked', async () => {
+    // Clear saveOut
+    saveOut = []
+
     // Fetch the page
     const page = await newSpecPage({
       components: [FskNote],

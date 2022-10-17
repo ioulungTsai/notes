@@ -32,6 +32,12 @@ export class FskNote {
   }
 
   /**
+   * Sent when user clicks on save button
+   * @event
+   */
+  @Event() saveNote: EventEmitter
+
+  /**
    * Called from HTML when user clicks on the save button
    */
   onSave() {
@@ -39,6 +45,7 @@ export class FskNote {
     const title : HTMLInputElement = root.querySelector('#fsk-note-title')
     const text : HTMLInputElement = root.querySelector('#fsk-note-content')
     saveNote(this.noteId, title.value, text.value)
+    this.saveNote.emit()
   }
 
   render() {
