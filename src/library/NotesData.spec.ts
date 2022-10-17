@@ -19,4 +19,12 @@ describe('NotesData Tests', () => {
     `)
     expect(noteData.getNote(1)).toEqual(expectedResults)
   })
+
+  test('saveNote should save a note', () => {
+    const expectedResults = JSON.parse(`
+      {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
+    `)
+    noteData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
+    expect(noteData.getNote(1)).toEqual(expectedResults)
+  })
 })
