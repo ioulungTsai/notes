@@ -61,6 +61,7 @@ declare namespace LocalJSX {
           * HTML property note-id: id of the note to display
          */
         "noteId"?: string;
+        "onCloseNote"?: (event: CustomEvent<any>) => void;
     }
     interface FskNotesList {
         /**

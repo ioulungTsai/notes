@@ -1,4 +1,5 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, Event } from '@stencil/core';
+import { EventEmitter } from '@stencil-community/router/dist/types/stencil.core';
 
 /**
  * Displays a note
@@ -14,12 +15,17 @@ export class FskNote {
    */
   @Prop() noteId: string
 
+  @Event() closeNote: EventEmitter
+  onClose() {
+    this.closeNote.emit()
+  }
+
   render() {
     return (
       <div class="fsk-note">
         <header class="fsk-note-header">
           <strong>Note Title</strong>
-          <nav class="fsk-note-button">close</nav>
+          <nav class="fsk-note-button" onClick={() => this.onClose()}>close</nav>
         </header>
         <div class="fsk-note-content">
           Now displaying note: {this.noteId}
