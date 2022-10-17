@@ -12,4 +12,11 @@ describe('NotesData Tests', () => {
   test('getList returns expected data',async () => {
     expect(noteData.getList()).toEqual(expectedData)
   })
+
+  test('getNote returns expected note', () => {
+    const expectedResults = JSON.parse(`
+      {"id":"1","datetime":"2022-10-16T10:10Z","title":"1st Note"}
+    `)
+    expect(noteData.getNote(1)).toEqual(expectedResults)
+  })
 })
