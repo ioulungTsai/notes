@@ -23,7 +23,7 @@ const text = JSON.parse(
  * Return list of all notes
  */
 export function getList() {
-  const clonedList = [...list]
+  const clonedList = JSON.parse(JSON.stringify(list))
   return (clonedList)
 }
 
@@ -50,4 +50,26 @@ export function saveNote(id: number, newTitle: string, newText: string) {
 
   const noteText = text[id - 1]
   noteText.text = newText
+}
+
+/**
+ * Adds a blank note to the list
+ *
+ * @returns id of the note created
+ */
+export function addNote() : number {
+  const id = list.length + 1
+  list.push({id: id, datetime: getDateTime(), title: 'untitled'})
+  text.push({id: id, text: ''})
+  return id
+}
+
+/**
+ * Get current date and time in ISO format
+ *
+ * @returns date time in ISO string format
+ */
+export function getDateTime() : string {
+  const date = new Date(Date.now()) // Use Date.now() to make code testable
+  return date.toISOString()
 }

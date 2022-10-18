@@ -27,4 +27,25 @@ describe('NotesData Tests', () => {
     noteData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
     expect(noteData.getNote(1)).toEqual(expectedResults)
   })
+
+  test('addNote should add a new note', () => {
+    const expectedResults = JSON.parse(`
+      {
+        "id":5,
+        "datetime":"2022-11-22T11:22:00.000Z",
+        "title":"untitled",
+        "text":""
+      }
+    `)
+
+    // Mock Date.now() to return a fixed testable date-time
+    jest.spyOn(global.Date, 'now')
+    .mockImplementationOnce(() =>
+      new Date('2022-11-22T11:22Z').valueOf()
+    )
+
+    // Add note 5 check for results
+    noteData.addNote()
+    expect(noteData.getNote(5)).toEqual(expectedResults)
+  })
 })
