@@ -6,5 +6,5 @@ export const app = express();
 
 app.get('/', (req, res) => {
   console.log('get /');
-  res.send('Hello Change World!');
+  res.send('Hello World!');
 });
