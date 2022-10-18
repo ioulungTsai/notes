@@ -45,7 +45,8 @@ describe('NotesData Tests', () => {
     )
 
     // Add note 5 check for results
-    noteData.addNote()
+    const newNodeId = noteData.addNote()
+    expect(newNodeId).toBe(5)
     expect(noteData.getNote(5)).toEqual(expectedResults)
   })
 })
