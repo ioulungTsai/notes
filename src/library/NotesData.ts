@@ -69,3 +69,12 @@ export function addNote() : number {
   objText[newId] = {id: newId, text: ''}
   return parseInt(newId)
 }
+
+/**
+ * Delete a note
+ * @param id Id of npte to be deleted
+ */
+export function deleteNote(id: number) {
+  delete objList[id.toString()]
+  delete objText[id.toString()]
+}

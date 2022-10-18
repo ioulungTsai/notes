@@ -9,12 +9,14 @@ const list = JSON.parse(
   ]`)
 
 let saveOut = []
+let deleteId = -1
 jest.mock('../../../library/NotesData.ts', () => ({
   getNote: (id: number) => {return(list[id - 1])},
   saveNote: (id: number, title: string, text: string) => {
     const saved = {id, title, text}
     saveOut.push(saved)
-  }
+  },
+  deleteNote: (id: number) => {deleteId = id}
 }))
 
 import { FskNote } from '../fsk-note';
@@ -32,6 +34,7 @@ describe('fsk-note', () => {
             <header class="fsk-note-header">
               <input id="fsk-note-title" value="1st Note">
               <nav id="fsk-note-save" class="fsk-note-button">Save</nav>
+              <nav id="fsk-note-delete" class="fsk-note-button">Delete</nav>
               <nav id="fsk-note-close" class="fsk-note-button">Close</nav>
             </header>
             <textarea id="fsk-note-content">Text for my 1st Note</textarea>
@@ -98,5 +101,23 @@ describe('fsk-note', () => {
     // Check resaults are as expected
     const expectedSave = {id: 1, title: 'Test Note Title', text: 'Test Note Content'}
     expect(JSON.stringify(saveOut[0])).toBe(JSON.stringify(expectedSave))
+  })
+
+  it('should delete note when delete button is clicked', async () => {
+    const page = await newSpecPage({
+      components: [FskNote],
+      html: `<fsk-note note-id="2"></fsk-note>`,
+    });
+
+    const spy = jest.fn()
+    page.win.addEventListener('closeNote', spy)
+
+    deleteId = -1 // reset for the test
+    const button : HTMLElement = (page.root.shadowRoot.querySelector("#fsk-note-delete"))
+    button.click()
+    await page.waitForChanges()
+
+    expect(deleteId).toBe(2)
+    expect(spy).toHaveBeenCalled()
   })
 });

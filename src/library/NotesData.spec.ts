@@ -54,4 +54,9 @@ describe('NotesData Tests', () => {
     expect(newNodeId).toBe(5)
     expect(notesData.getNote(5)).toEqual(expectedResults)
   })
+
+  test('deleteNote deletes the right note', () => {
+    notesData.deleteNote(2)
+    expect(Object.keys(notesData.getNote(2)).length).toBe(0)
+  })
 })
