@@ -1,4 +1,4 @@
-import * as noteData from './NotesData'
+import * as notesData from './NotesData'
 
 describe('NotesData Tests', () => {
   const expectedData = JSON.parse(
@@ -10,28 +10,33 @@ describe('NotesData Tests', () => {
   ]`)
 
   test('getList returns expected data',async () => {
-    expect(noteData.getList()).toEqual(expectedData)
+    expect(notesData.getList()).toEqual(expectedData)
   })
 
   test('getNote returns expected note', () => {
     const expectedResults = JSON.parse(`
       {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note","text": "Text for my 1st Note"}
     `)
-    expect(noteData.getNote(1)).toEqual(expectedResults)
+    expect(notesData.getNote(1)).toEqual(expectedResults)
+  })
+
+  test('getNote returns empty object if id is invalid', () => {
+    const note = notesData.getNote(-1)
+    expect(Object.keys(note).length).toBe(0)
   })
 
   test('saveNote should save a note', () => {
     const expectedResults = JSON.parse(`
       {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
     `)
-    noteData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
-    expect(noteData.getNote(1)).toEqual(expectedResults)
+    notesData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
+    expect(notesData.getNote(1)).toEqual(expectedResults)
   })
 
   test('addNote should add a new note', () => {
     const expectedResults = JSON.parse(`
       {
-        "id":5,
+        "id":"5",
         "datetime":"2022-11-22T11:22:00.000Z",
         "title":"untitled",
         "text":""
@@ -45,8 +50,8 @@ describe('NotesData Tests', () => {
     )
 
     // Add note 5 check for results
-    const newNodeId = noteData.addNote()
+    const newNodeId = notesData.addNote()
     expect(newNodeId).toBe(5)
-    expect(noteData.getNote(5)).toEqual(expectedResults)
+    expect(notesData.getNote(5)).toEqual(expectedResults)
   })
 })
