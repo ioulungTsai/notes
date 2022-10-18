@@ -1,7 +1,7 @@
 /**
  * Main application router for gateway
  */
-const express = require('express');
+import express from 'express'
 const app = express();
 
 app.get('/', (req, res) => {
