@@ -29,7 +29,7 @@ const objText = Utils.arrToObj(text, 'id')
  */
 export async function getList() {
   const gatewayMsg = await axios.get('/')
-  console.log(gatewayMsg)
+  // console.log(gatewayMsg.data)
   const arrayList = Object.values(objList)
   const clonedList = JSON.parse(JSON.stringify(arrayList))
   return (clonedList)
