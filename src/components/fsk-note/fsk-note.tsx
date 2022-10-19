@@ -54,19 +54,19 @@ export class FskNote {
   /**
    * Called from HTML when user clicks on the save button
    */
-  onSave() {
+  async onSave() {
     const root = this.el.shadowRoot
     const title : HTMLInputElement = root.querySelector('#fsk-note-title')
     const text : HTMLInputElement = root.querySelector('#fsk-note-content')
-    saveNote(this.noteId, title.value, text.value)
+    await saveNote(this.noteId, title.value, text.value)
     this.saveNote.emit()
   }
 
   /**
    * Called from HTML when user clicks on the delete button
    */
-  onDelete() {
-    deleteNote(this.noteId)
+  async onDelete() {
+    await deleteNote(this.noteId)
     this.closeNote.emit()
   }
 

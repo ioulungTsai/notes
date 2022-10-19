@@ -57,7 +57,10 @@ export async function getNote(id: number) {
  * @param newTitle : new title for the note
  * @param newText : edited text for the note
  */
-export function saveNote(id: number, newTitle: string, newText: string) {
+export async function saveNote(id: number, newTitle: string, newText: string) {
+  const gatewayMsg = await axios.put('/api/note/save/1')
+  console.log(gatewayMsg.data)
+
   const note = objList[id.toString()]
   note.title = newTitle
 
@@ -84,7 +87,10 @@ export async function addNote() : Promise<number> {
  * Delete a note
  * @param id Id of npte to be deleted
  */
-export function deleteNote(id: number) {
+export async function deleteNote(id: number) {
+  const msg = await axios.delete('/api/note/1')
+  console.log(msg.data)
+
   delete objList[id.toString()]
   delete objText[id.toString()]
 }

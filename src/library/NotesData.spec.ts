@@ -37,9 +37,12 @@ describe('NotesData Tests', () => {
     const expectedResults = JSON.parse(`
       {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
     `)
+    const putMock = jest.spyOn(axios, 'put')
+    putMock.mockResolvedValue({data: 'save put'})
+
     notesData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
 
-    mock.mockResolvedValue({data: 'save note'})
+    mock.mockResolvedValue({data: 'saved note'})
     const note = await notesData.getNote(1)
     expect(note).toEqual(expectedResults)
   })
@@ -74,9 +77,11 @@ describe('NotesData Tests', () => {
   })
 
   test('deleteNote deletes the right note', async () => {
-    notesData.deleteNote(2)
+    const deleteMock = jest.spyOn(axios, 'delete')
+    deleteMock.mockResolvedValue({data: 'delete note'})
+    await notesData.deleteNote(2)
 
-    mock.mockResolvedValue({data: 'delete note'})
+    mock.mockResolvedValue({data: 'deleted note'})
     const note = await notesData.getNote(2)
     expect(Object.keys(note).length).toBe(0)
   })
