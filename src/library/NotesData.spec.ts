@@ -60,8 +60,12 @@ describe('NotesData Tests', () => {
       new Date('2022-11-22T11:22Z').valueOf()
     )
 
+    // Mock axios.post
+    const postMock = jest.spyOn(axios, 'post')
+    postMock.mockResolvedValue({data: 'add note'})
+
     // Add note 5 check for results
-    const newNodeId = notesData.addNote()
+    const newNodeId = await notesData.addNote()
     expect(newNodeId).toBe(5)
 
     mock.mockResolvedValue({data: 'added note'})

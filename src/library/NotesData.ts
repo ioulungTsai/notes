@@ -71,7 +71,9 @@ export function saveNote(id: number, newTitle: string, newText: string) {
  * @returns id of the note created
  */
 let idCount = 4
-export function addNote() : number {
+export async function addNote() : Promise<number> {
+  const msg = await axios.post('/api/note/add')
+  console.log(msg.data)
   const newId = (++idCount).toString()
   objList[newId] = {id: newId, datetime: Utils.getDateTime(), title: 'untitled'}
   objText[newId] = {id: newId, text: ''}
