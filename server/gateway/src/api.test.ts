@@ -1,6 +1,11 @@
 import { app } from './app'
 import request from 'supertest'
 
+// Mock Date.now to return testable time
+jest.spyOn(global.Date, 'now').mockImplementation(
+  () => new Date("2022-10-19T10:00:22.246Z").valueOf()
+)
+
 describe('gateway API tests', () => {
   it('should get the notes list', async () => {
     const expectedData = JSON.parse(
@@ -31,9 +36,18 @@ describe('gateway API tests', () => {
   })
 
   it('should add a new note', async () => {
-    const response = await request(app).post('/api/note/add')
+    let response = await request(app).post('/api/note/add')
     expect(response.status).toBe(201)
-    expect(response.text).toBe('add new note')
+    expect(response.text).toBe("5")
+
+    // Get the new note to check its content
+    response = await request(app).get('/api/note/5')
+    expect(response.status).toBe(200)
+
+    const expectedResults = JSON.parse(`
+      {"id":"5","datetime":"2022-10-19T10:00:22.246Z","title":"untitled","text":""}
+    `)
+    expect(response.text).toBe(JSON.stringify(expectedResults))
   })
 
   it('should save a note', async () => {

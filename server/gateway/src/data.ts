@@ -77,11 +77,11 @@ export function saveNote(id: number, newTitle: string, newText: string) {
  * @returns id of the note created
  */
 let idCount = 4
-export function addNote() : number {
+export function addNote() : string {
   const newId = (++idCount).toString()
   objList[newId] = {id: newId, datetime: Utils.getDateTime(), title: 'untitled'}
   objText[newId] = {id: newId, text: ''}
-  return parseInt(newId)
+  return newId
 }
 
 /**
