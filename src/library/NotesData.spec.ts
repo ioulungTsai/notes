@@ -28,17 +28,11 @@ describe('NotesData Tests', () => {
   })
 
   test('saveNote should save a note', async () => {
-    const expectedResults = JSON.parse(`
-      {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
-    `)
     const putMock = jest.spyOn(axios, 'put')
-    putMock.mockResolvedValue({data: 'save put'})
+    putMock.mockResolvedValue({data: 1})
 
-    notesData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
-
-    mock.mockResolvedValue({data: expectedResults})
-    const note = await notesData.getNote(1)
-    expect(note).toEqual(expectedResults)
+    const saveResult = await notesData.saveNote(1, 'Edited Test Title', 'Edited Test Text')
+    expect(saveResult).toBe(1)
   })
 
   test('addNote should add a new note', async () => {
