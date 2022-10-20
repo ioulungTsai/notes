@@ -26,7 +26,7 @@ const objText = Utils.arrToObj(text, 'id')
 /**
  * Return list of all notes
  */
-export async function getList() {
+export function getList() {
   const arrayList = Object.values(objList)
   const clonedList = JSON.parse(JSON.stringify(arrayList))
   return (clonedList)
@@ -36,7 +36,7 @@ export async function getList() {
  * Fethches data for a single note
  * @param id : Id of the note to fetch
  */
-export async function getNote(id: number) {
+export function getNote(id: number) {
   if(!(id.toString() in objList)) return {}
 
   const note = objList[id.toString()]
@@ -51,7 +51,7 @@ export async function getNote(id: number) {
  * @param newTitle : new title for the note
  * @param newText : edited text for the note
  */
-export async function saveNote(id: number, newTitle: string, newText: string) {
+export function saveNote(id: number, newTitle: string, newText: string) {
   const note = objList[id.toString()]
   note.title = newTitle
 
@@ -65,7 +65,7 @@ export async function saveNote(id: number, newTitle: string, newText: string) {
  * @returns id of the note created
  */
 let idCount = 4
-export async function addNote() : Promise<number> {
+export function addNote() : number {
   const newId = (++idCount).toString()
   objList[newId] = {id: newId, datetime: Utils.getDateTime(), title: 'untitled'}
   objText[newId] = {id: newId, text: ''}
@@ -76,7 +76,7 @@ export async function addNote() : Promise<number> {
  * Delete a note
  * @param id Id of npte to be deleted
  */
-export async function deleteNote(id: number) {
+export function deleteNote(id: number) {
   delete objList[id.toString()]
   delete objText[id.toString()]
 }
