@@ -18,13 +18,12 @@ describe('NotesData Tests', () => {
     const expectedResults = JSON.parse(`
       {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note","text": "Text for my 1st Note"}
     `)
-    const note = await data.getNote(1)
+    const note = await data.getNote("1")
     expect(note).toEqual(expectedResults)
   })
 
   test('getNote returns empty object if id is invalid', async () => {
-    const note = await data.getNote(-1)
-    expect(Object.keys(note).length).toBe(0)
+    expect(() => data.getNote("-1")).toThrowError()
   })
 
   test('saveNote should save a note', async () => {
@@ -34,7 +33,7 @@ describe('NotesData Tests', () => {
 
     data.saveNote(1, 'Edited Test Title', 'Edited Test Text')
 
-    const note = await data.getNote(1)
+    const note = await data.getNote("1")
     expect(note).toEqual(expectedResults)
   })
 
@@ -58,14 +57,12 @@ describe('NotesData Tests', () => {
     const newNodeId = await data.addNote()
     expect(newNodeId).toBe(5)
 
-    const note = await data.getNote(newNodeId)
+    const note = await data.getNote(newNodeId.toString())
     expect(note).toEqual(expectedResults)
   })
 
   test('deleteNote deletes the right note', async () => {
     await data.deleteNote(2)
-
-    const note = await data.getNote(2)
-    expect(Object.keys(note).length).toBe(0)
+    expect(() => data.getNote("2")).toThrowError()
   })
 })
