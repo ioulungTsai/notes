@@ -13,7 +13,7 @@ describe('NotesData Tests', () => {
   ]`)
 
   test('getList returns expected data',async () => {
-    mock.mockResolvedValue({data: 'list'})
+    mock.mockResolvedValue({data: expectedData})
     const data = await notesData.getList()
     expect(data).toEqual(expectedData)
   })

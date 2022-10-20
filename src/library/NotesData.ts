@@ -27,12 +27,10 @@ const objText = Utils.arrToObj(text, 'id')
 /**
  * Return list of all notes
  */
-export async function getList() {
-  const gatewayMsg = await axios.get('/api/list')
-  console.log(gatewayMsg.data)
-  const arrayList = Object.values(objList)
-  const clonedList = JSON.parse(JSON.stringify(arrayList))
-  return (clonedList)
+export async function getList() : Promise<Array<Record<string, string>>> {
+  const response = await axios.get('/api/list')
+  console.log(response.data)
+  return response.data
 }
 
 /**
