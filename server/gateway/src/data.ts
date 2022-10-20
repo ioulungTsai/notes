@@ -4,24 +4,24 @@ import * as Utils from "./Utils"
  * Data library for Notes
  * @packageDocumentation
  */
-
-const list = JSON.parse(
-`[
+const listDefault = `[
   {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note"},
   {"id":"2","datetime":"2022-10-17T10:11Z","title":"My 2nd Note"},
   {"id":"3","datetime":"2022-10-18T10:12Z","title":"My 3rd Note"},
   {"id":"4","datetime":"2022-10-19T10:13Z","title":"My 4th Note"}
-]`)
-const objList = Utils.arrToObj(list, 'id')
+]`
 
-const text = JSON.parse(
-`[
+let list = JSON.parse(listDefault)
+let objList = Utils.arrToObj(list, 'id')
+
+const textDefault = `[
   {"id":"1","text":"Text for my 1st Note"},
   {"id":"2","text":"Text for my 2nd Note"},
   {"id":"3","text":"Text for my 3rd Note"},
   {"id":"4","text":"Text for my 4th Note"}
-]`)
-const objText = Utils.arrToObj(text, 'id')
+]`
+const text = JSON.parse(textDefault)
+let objText = Utils.arrToObj(text, 'id')
 
 /**
  * Return list of all notes
@@ -96,4 +96,15 @@ export function deleteNote(id: string) : string{
   delete objText[checkedId]
 
   return checkedId
+}
+
+/**
+ * Resets dummy data to known state
+ */
+export function reset() : void {
+  list = JSON.parse(listDefault)
+  objList = Utils.arrToObj(list, 'id')
+  const text = JSON.parse(textDefault)
+  objText = Utils.arrToObj(text, 'id')
+  idCount = 4
 }

@@ -67,4 +67,20 @@ describe('NotesData Tests', () => {
     expect(() => data.getNote("2")).toThrowError()
   })
 
+  test('if reset sets data back to defaults', () => {
+    // Change the data
+    const id = data.addNote()
+
+    //Check that data is not as expected
+    const list = data.getList()
+    expect(list).not.toEqual(expectedData)
+    expect(id).not.toEqual('5')
+
+    // Reset data and check it matches defults
+    data.reset()
+    const resetList = data.getList()
+    expect(resetList).toEqual(expectedData)
+    const restId = data.addNote()
+    expect(restId).toEqual('5')
+  })
 })
