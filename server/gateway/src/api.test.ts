@@ -46,7 +46,13 @@ describe('gateway API tests', () => {
   it('should delete a note', async () => {
     const response = await request(app).delete('/api/note/1')
     expect(response.status).toBe(200)
-    expect(response.text).toBe('delete note:1')
+    expect(response.text).toBe("1")
+  })
+
+  it('should error out if note id is not valid', async () => {
+    const response = await request(app).delete('/api/note/-1')
+    expect(response.status).toBe(404)
+    expect(response.text).toBe("-1")
   })
 
 })

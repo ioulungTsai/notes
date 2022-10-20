@@ -62,7 +62,12 @@ describe('NotesData Tests', () => {
   })
 
   test('deleteNote deletes the right note', async () => {
-    await data.deleteNote(2)
+    const deletedId = await data.deleteNote("2")
+    expect(deletedId).toBe("2")
     expect(() => data.getNote("2")).toThrowError()
+  })
+
+  test('deleteNote returns empty object if id is invalid', async () => {
+    expect(() => data.deleteNote("-1")).toThrowError()
   })
 })

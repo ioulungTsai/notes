@@ -37,7 +37,7 @@ export function getList() {
  * @param id id to concert to string
  * @throws Error if id is no valid
  */
-function getStrId(id: string) : string {
+function getCheckedId(id: string) : string {
   if(!(id in objList))
     throw new Error('Note does not exist!')
   else
@@ -49,7 +49,7 @@ function getStrId(id: string) : string {
  * @param id : Id of the note to fetch
  */
 export function getNote(id: string) {
-  const strId = getStrId(id)
+  const strId = getCheckedId(id)
 
   const note = objList[strId]
   const clonedNote = {...note}
@@ -88,7 +88,10 @@ export function addNote() : number {
  * Delete a note
  * @param id Id of npte to be deleted
  */
-export function deleteNote(id: number) {
-  delete objList[id.toString()]
-  delete objText[id.toString()]
+export function deleteNote(id: string) : string{
+  const checkedId = getCheckedId(id)
+  delete objList[checkedId]
+  delete objText[checkedId]
+
+  return checkedId
 }
