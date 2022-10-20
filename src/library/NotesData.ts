@@ -10,7 +10,6 @@ axios.defaults.baseURL = 'http://localhost:8080'
  */
 export async function getList() : Promise<Array<Record<string, string>>> {
   const response = await axios.get('/api/list')
-  console.log(response.data)
   return response.data
 }
 
