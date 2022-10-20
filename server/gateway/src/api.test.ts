@@ -51,9 +51,23 @@ describe('gateway API tests', () => {
   })
 
   it('should save a note', async () => {
-    const response = await request(app).put('/api/note/save/2')
+    // save note
+    let response = await request(app)
+      .put('/api/note/save/2')
+      .send({title: 'test title', text: 'test text'})
+
+    // check response is ok
     expect(response.status).toBe(200)
-    expect(response.text).toBe('save note:2')
+    expect(response.text).toBe('2')
+
+    // Get note back
+    response = await request(app).get('/api/note/2')
+    expect(response.status).toBe(200)
+
+    const expectedResults = JSON.parse(`
+      {"id":"2","datetime":"2022-10-17T10:11Z","title":"test title","text":"test text"}
+    `)
+    expect(response.text).toBe(JSON.stringify(expectedResults))
   })
 
 

@@ -63,12 +63,14 @@ export function getNote(id: string) {
  * @param newTitle : new title for the note
  * @param newText : edited text for the note
  */
-export function saveNote(id: number, newTitle: string, newText: string) {
+export function saveNote(id: string, newTitle: string, newText: string) : string {
   const note = objList[id.toString()]
   note.title = newTitle
 
   const noteText = objText[id.toString()]
   noteText.text = newText
+
+  return id
 }
 
 /**

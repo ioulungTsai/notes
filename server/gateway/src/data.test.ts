@@ -31,7 +31,7 @@ describe('NotesData Tests', () => {
       {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
     `)
 
-    data.saveNote(1, 'Edited Test Title', 'Edited Test Text')
+    data.saveNote("1", 'Edited Test Title', 'Edited Test Text')
 
     const note = await data.getNote("1")
     expect(note).toEqual(expectedResults)
@@ -66,5 +66,5 @@ describe('NotesData Tests', () => {
     expect(deletedId).toBe("2")
     expect(() => data.getNote("2")).toThrowError()
   })
-  
+
 })
