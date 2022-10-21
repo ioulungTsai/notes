@@ -64,13 +64,14 @@ export function getNote(id: string) {
  * @param newText : edited text for the note
  */
 export function saveNote(id: string, newTitle: string, newText: string) : string {
-  const note = objList[id.toString()]
+  const checkedId = getCheckedId(id)
+  const note = objList[checkedId]
   note.title = newTitle
 
-  const noteText = objText[id.toString()]
+  const noteText = objText[checkedId]
   noteText.text = newText
 
-  return id
+  return checkedId
 }
 
 /**
