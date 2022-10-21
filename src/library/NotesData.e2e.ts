@@ -37,6 +37,7 @@ describe('NotesData Integration Tests', () => {
     // Test that a bad id returns an error from the server
     try {
       await notesData.getNote(-1)
+      fail('getNote did not rturn an error')
     } catch (error) {
       expect(error.response.status).toBe(404)
       expect(error.response.data).toBe(-1)
@@ -63,6 +64,7 @@ describe('NotesData Integration Tests', () => {
     // fetch note #2 to prove it does note exist
     try {
       await notesData.getNote(2)
+      fail('getNote did not rturn an error')
     } catch (error) {
       expect(error.response.status).toBe(404)
       expect(error.response.data).toBe(2)
@@ -71,6 +73,7 @@ describe('NotesData Integration Tests', () => {
     // delete note that does not exist
     try {
       await notesData.deleteNote(2)
+      fail('deleteNote did not rturn an error')
     } catch (error) {
       expect(error.response.status).toBe(404)
       expect(error.response.data).toBe(2)
@@ -89,12 +92,11 @@ describe('NotesData Integration Tests', () => {
     // Test that a bad id returns an error from the server
     try {
       await notesData.saveNote(-1, 'Edited Test Title', 'Edited Test Text')
+      fail('saveNote did not rturn an error')
     } catch (error) {
       expect(error.response.status).toBe(404)
       expect(error.response.data).toBe(-1)
     }
   })
-
-
 
 })
