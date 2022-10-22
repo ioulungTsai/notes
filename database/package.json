@@ -17,8 +17,10 @@
   "author": "Brandon Tsai",
   "license": "ISC",
   "dependencies": {
+    "@types/minimist": "^1.2.2",
     "axios": "^0.27.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "minimist": "^1.2.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
