@@ -28,11 +28,25 @@ const objText = Utils.arrToObj(text, 'id')
 
 /**
  * Return list of all notes
+ *
+ * @returns array of noteListItem
  */
-export function getList() {
-  const arrayList = Object.values(objList)
-  const clonedList = JSON.parse(JSON.stringify(arrayList))
-  return (clonedList)
+export interface noteListItem {
+  id: string;
+  datetime: number;
+  title: string;
+}
+
+export async function getList() : Promise<noteListItem[]>{
+  const response = await db.send({
+    "operation": "sql",
+    "sql": `
+      SELECT id,__createdtime__ AS datetime,title
+      FROM notes.notes
+      ORDER BY datetime
+    `
+  })
+  return (<noteListItem[]>response)
 }
 
 /**
@@ -106,29 +120,29 @@ export function deleteNote(id: string) : string{
  * Resets dummy data to known state
  */
 const dbResetData = JSON.parse(`[
-  {"title":"My First Note","text":"Text for my first note"},
-  {"title":"My Second Note","text":"Text for my second note"},
-  {"title":"My Third Note","text":"Text for my third note"},
-  {"title":"My Fourth Note","text":"Text for my fourth note"}
+  {"title":"My 1st Note","text":"Text for my first note"},
+  {"title":"My 2nd Note","text":"Text for my second note"},
+  {"title":"My 3rd Note","text":"Text for my third note"},
+  {"title":"My 4th Note","text":"Text for my fourth note"}
 ]`)
 
 export async function reset() : Promise<void> {
   // Delete all record in notes table
-  let reponse = await db.send({
+  let response = await db.send({
     "operation":"sql",
     "sql":"DELETE FROM notes.notes"
   })
-  console.log(reponse)
+  // console.log(reponse)
 
   // Add test records
   for(let i = 0; i<dbResetData.length; ++i) {
-    reponse = await db.send({
+    response = await db.send({
       "operation": "sql",
       "sql": `
         INSERT INTO notes.notes (title,text)
         VALUES('${dbResetData[i].title}','${dbResetData[i].text}')
       `
     })
-    console.log(reponse)
+    // console.log(response)
   }
 }
