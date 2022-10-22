@@ -4,7 +4,7 @@ import * as testapi from './test-api'
 app.use('/test', testapi.router)
 
 describe('Test API Tests', () => {
-  it('should reset data', async () => {
+  it.skip('should reset data', async () => {
     const expectedData = JSON.parse(
       `[
         {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note"},
