@@ -1,6 +1,9 @@
 import * as data from './data'
 
 describe('NotesData Tests', () => {
+  beforeEach(async () => {await data.reset()})
+  afterAll(async () => {await data.reset()})
+
   const expectedData = JSON.parse(
   `[
     {"title":"My 1st Note"},
@@ -33,59 +36,59 @@ describe('NotesData Tests', () => {
     expect(() => data.getNote("-1")).rejects.toThrowError()
   })
 
-  test.skip('saveNote should save a note', async () => {
+  test('saveNote should save a note', async () => {
     const expectedResults = JSON.parse(`
-      {"id":"1","datetime":"2022-10-16T10:10Z","title":"Edited Test Title","text": "Edited Test Text"}
+      {"title":"Edited Test Title","text": "Edited Test Text"}
     `)
 
-    data.saveNote("1", 'Edited Test Title', 'Edited Test Text')
+    // Get note id from the list
+    const list = await data.getList()
 
-    const note = await data.getNote("1")
-    expect(note).toEqual(expectedResults)
+    // save note and check response is correct
+    const id = await data.saveNote(
+      list[1].id, 'Edited Test Title', 'Edited Test Text')
+    expect(id).toEqual(list[1].id)
+
+    // Get the note to check it saved
+    const note = await data.getNote(id)
+    expect(note.title).toEqual(expectedResults.title)
+    expect(note.text).toEqual(expectedResults.text)
   })
 
-  test.skip('saveNote throws error if id is invalid', async () => {
-    expect(() => data.saveNote("-1", 'Edited Test Title', 'Edited Test Text')).toThrowError()
+  test('saveNote throws error if id is invalid', async () => {
+    expect(data.saveNote("-1", 'Edited Test Title', 'Edited Test Text')).rejects.toThrowError()
   })
 
-  test.skip('addNote should add a new note', async () => {
-    const expectedResults = JSON.parse(`
-      {
-        "id":"5",
-        "datetime":"2022-11-22T11:22:00.000Z",
-        "title":"untitled",
-        "text":""
-      }
-    `)
-
-    // Mock Date.now() to return a fixed testable date-time
-    jest.spyOn(global.Date, 'now')
-    .mockImplementationOnce(() =>
-      new Date('2022-11-22T11:22Z').valueOf()
-    )
+  test('addNote should add a new note', async () => {
+    const expectedResults = JSON.parse(`{"title":"untitled","text":""}`)
 
     // Add note 5 check for results
     const newNodeId = await data.addNote()
-    expect(newNodeId).toBe("5")
 
-    const note = await data.getNote(newNodeId.toString())
-    expect(note).toEqual(expectedResults)
+    // Get note and check it is as expected
+    const note = await data.getNote(newNodeId)
+    expect(note.title).toEqual(expectedResults.title)
+    expect(note.text).toEqual(expectedResults.text)
   })
 
-  test.skip('deleteNote deletes the right note', async () => {
-    const deletedId = await data.deleteNote("2")
-    expect(deletedId).toBe("2")
-    expect(() => data.getNote("2")).toThrowError()
+  test('deleteNote deletes the right note', async () => {
+    const list = await data.getList()
+    const deletedId = await data.deleteNote(list[0].id)
+    expect(deletedId).toBe(list[0].id)
+    expect(data.getNote(deletedId)).rejects.toThrowError()
+  })
+
+  test('deleteNote throws error if id is invalid', async () => {
+    expect(data.deleteNote("-1")).rejects.toThrowError()
   })
 
   test('if reset sets data back to defaults', async () => {
-    // // Change the data
-    // const id = data.addNote()
+    // Change the data
+    await data.addNote()
 
-    // //Check that data is not as expected
-    // const list = data.getList()
-    // expect(list).not.toEqual(expectedData)
-    // expect(id).not.toEqual('5')
+    //Check that data is not as expected
+    const list = await data.getList()
+    expect(list.length).not.toBe(4)
 
     // Reset data and check it matches defults
     await data.reset()
@@ -93,9 +96,5 @@ describe('NotesData Tests', () => {
     expect(resetList.length).toBe(4)
     for(let i = 0; i < resetList.length; ++i)
       expect(resetList[i].title).toEqual(expectedData[i].title)
-    // const resetList = data.getList()
-    // expect(resetList).toEqual(expectedData)
-    // const restId = data.addNote()
-    // expect(restId).toEqual('5')
   })
 })

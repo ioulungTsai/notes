@@ -7,24 +7,6 @@ const db = new Utils.DBconnect()
  * Data library for Notes
  * @packageDocumentation
  */
-const listDefault = `[
-  {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note"},
-  {"id":"2","datetime":"2022-10-17T10:11Z","title":"My 2nd Note"},
-  {"id":"3","datetime":"2022-10-18T10:12Z","title":"My 3rd Note"},
-  {"id":"4","datetime":"2022-10-19T10:13Z","title":"My 4th Note"}
-]`
-
-const list = JSON.parse(listDefault)
-const objList = Utils.arrToObj(list, 'id')
-
-const textDefault = `[
-  {"id":"1","text":"Text for my 1st Note"},
-  {"id":"2","text":"Text for my 2nd Note"},
-  {"id":"3","text":"Text for my 3rd Note"},
-  {"id":"4","text":"Text for my 4th Note"}
-]`
-const text = JSON.parse(textDefault)
-const objText = Utils.arrToObj(text, 'id')
 
 /**
  * Return list of all notes
@@ -47,18 +29,6 @@ export async function getList() : Promise<noteListItem[]>{
     `
   })
   return (<noteListItem[]>response)
-}
-
-/**
- * Converts id to string and checks its validity
- * @param id id to concert to string
- * @throws Error if id is no valid
- */
-function getCheckedId(id: string) : string {
-  if(!(id in objList))
-    throw new Error('Note does not exist!')
-  else
-    return id
 }
 
 /**
@@ -94,15 +64,26 @@ export async function getNote(id: string) : Promise<note>{
  * @param newTitle : new title for the note
  * @param newText : edited text for the note
  */
-export function saveNote(id: string, newTitle: string, newText: string) : string {
-  const checkedId = getCheckedId(id)
-  const note = objList[checkedId]
-  note.title = newTitle
+interface updateResponse {
+  message: string,
+  skipped_hashes: Array<string>,
+  update_hashes: Array<string>,
+}
 
-  const noteText = objText[checkedId]
-  noteText.text = newText
+export async function saveNote(id: string, newTitle: string, newText: string) : Promise<string> {
+  const response = <updateResponse> await db.send({
+    "operation": "sql",
+    "sql": `
+      UPDATE notes.notes
+      SET title = '${newTitle}', text = '${newText}'
+      WHERE id = '${id}'
+    `
+  })
 
-  return checkedId
+  if(response.update_hashes.length === 1)
+    return response.update_hashes[0]
+  else
+    throw new Error('Note does not exit!')
 }
 
 /**
@@ -110,24 +91,48 @@ export function saveNote(id: string, newTitle: string, newText: string) : string
  *
  * @returns id of the note created
  */
-let idCount = 4
-export function addNote() : string {
-  const newId = (++idCount).toString()
-  objList[newId] = {id: newId, datetime: Utils.getDateTime(), title: 'untitled'}
-  objText[newId] = {id: newId, text: ''}
-  return newId
+interface insertResponse {
+  message: string,
+  skipped_hashes: Array<string>,
+  inserted_hashes: Array<string>,
+}
+export async function addNote() : Promise<string> {
+  const response = <insertResponse> await db.send({
+    "operation": "sql",
+    "sql": `
+      INSERT INTO notes.notes (title,text)
+      VALUE('untitled', '')
+    `
+  })
+
+  if(response.inserted_hashes.length === 1)
+    return response.inserted_hashes[0]
+  else
+    throw new Error('Fail to create note!')
 }
 
 /**
  * Delete a note
  * @param id Id of npte to be deleted
  */
-export function deleteNote(id: string) : string{
-  const checkedId = getCheckedId(id)
-  delete objList[checkedId]
-  delete objText[checkedId]
+ interface deleteResponse {
+  message: string,
+  skipped_hashes: Array<string>,
+  deleted_hashes: Array<string>,
+}
+export async function deleteNote(id: string) : Promise<string>{
+  const response = <deleteResponse> await db.send({
+    "operation": "sql",
+    "sql": `
+      DELETE FROM notes.notes
+      WHERE id = '${id}'
+    `
+  })
 
-  return checkedId
+  if(response.deleted_hashes.length === 1)
+    return response.deleted_hashes[0]
+  else
+    throw new Error('Fail to delete note!')
 }
 
 /**
