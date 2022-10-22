@@ -14,9 +14,14 @@ export class FskNote {
   @Element() el: HTMLElement
 
   /**
+   * data-test property for testing
+   */
+  @Prop() dataTest: string
+
+  /**
    * HTML property note-id: id of the note to display
    */
-  @Prop() noteId: number
+  @Prop() noteId: string
 
   /**
    * Note to render

@@ -50,10 +50,11 @@ export class FskNotesList {
 
   /**
    * Called by HTML row when user clicks on the row
-   * @param noteId - id of the note selected
+   * @param datatest - id use for testing
+   * @param noteid - id of the note selected
    */
-  onSelectNote(noteId: number) {
-    this.selectedNote.emit(noteId)
+  onSelectNote(datatest: string, noteid: number) {
+    this.selectedNote.emit({datatest: datatest, noteid: noteid})
   }
 
   render() {
@@ -70,7 +71,8 @@ export class FskNotesList {
           </thead>
           <tbody>
             {this.notes.map((note:any, index:number) =>
-              <tr id={'note'+note.id} onClick={() => this.onSelectNote(note.id)}>
+              <tr data-test={'note'+ (index + 1)}
+                onClick={() => this.onSelectNote('note'+ (index + 1), note.id)}>
                 <td>{index + 1}</td>
                 <td>
                   {dayjs(note.datetime).format('MMMM D, YYYY h:mm A')}

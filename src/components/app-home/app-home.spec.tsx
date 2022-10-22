@@ -34,7 +34,7 @@ describe('app-home tests', () => {
     });
 
     const selectedNoteEvent = new CustomEvent(
-      'selectedNote', {'detail':'1'}
+      'selectedNote', {'detail':{'datatest':'note1','noteid':'1'}}
     )
 
     page.root.dispatchEvent(selectedNoteEvent)
@@ -44,7 +44,7 @@ describe('app-home tests', () => {
       <div class="app-home">
         <button id="app-home-add-note">Add Note</button>
         <fsk-notes-list></fsk-notes-list>
-        <fsk-note note-id="1"></fsk-note>
+        <fsk-note data-test="note1" note-id="1"></fsk-note>
       </div>
     `)
   })
@@ -95,7 +95,7 @@ describe('app-home tests', () => {
       <div class="app-home">
         <button id="app-home-add-note">Add Note</button>
         <fsk-notes-list></fsk-notes-list>
-        <fsk-note note-id="5"></fsk-note>
+        <fsk-note data-test="note10" note-id="5"></fsk-note>
       </div>
     `)
   })
