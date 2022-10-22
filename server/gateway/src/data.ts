@@ -147,7 +147,8 @@ const dbResetData = JSON.parse(`[
 
 export async function reset() : Promise<void> {
   // Delete all record in notes table
-  let response = await db.send({
+  // let response =
+  await db.send({
     "operation":"sql",
     "sql":"DELETE FROM notes.notes"
   })
@@ -155,7 +156,8 @@ export async function reset() : Promise<void> {
 
   // Add test records
   for(let i = 0; i<dbResetData.length; ++i) {
-    response = await db.send({
+    // response =
+    await db.send({
       "operation": "sql",
       "sql": `
         INSERT INTO notes.notes (title,text)
