@@ -16,16 +16,21 @@ describe('NotesData Tests', () => {
       expect(list[i].title).toEqual(expectedData[i].title)
   })
 
-  test.skip('getNote returns expected note', async () => {
+  test('getNote returns expected note', async () => {
     const expectedResults = JSON.parse(`
-      {"id":"1","datetime":"2022-10-16T10:10Z","title":"My 1st Note","text": "Text for my 1st Note"}
+      {"title":"My 1st Note","text": "Text for my 1st Note"}
     `)
-    const note = await data.getNote("1")
-    expect(note).toEqual(expectedResults)
+    const list = await data.getList()
+    const note = await data.getNote(list[0].id)
+    expect(note.id).toBe(list[0].id)
+    expect(note.datetime).toBe(list[0].datetime)
+    expect(note.title).toBe(expectedResults.title)
+    expect(note.text).toBe(expectedResults.text)
   })
 
-  test.skip('getNote throws error if id is invalid', async () => {
-    expect(() => data.getNote("-1")).toThrowError()
+  test('getNote throws error if id is invalid', async () => {
+    // Without "rejects" toThrowError will be synchronous
+    expect(() => data.getNote("-1")).rejects.toThrowError()
   })
 
   test.skip('saveNote should save a note', async () => {

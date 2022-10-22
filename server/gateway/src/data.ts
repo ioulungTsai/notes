@@ -32,9 +32,9 @@ const objText = Utils.arrToObj(text, 'id')
  * @returns array of noteListItem
  */
 export interface noteListItem {
-  id: string;
-  datetime: number;
-  title: string;
+  id: string,
+  datetime: number,
+  title: string,
 }
 
 export async function getList() : Promise<noteListItem[]>{
@@ -65,13 +65,27 @@ function getCheckedId(id: string) : string {
  * Fethches data for a single note
  * @param id : Id of the note to fetch
  */
-export function getNote(id: string) {
-  const strId = getCheckedId(id)
+export interface note {
+  id: string,
+  datetime: number,
+  title: string,
+  text: string
+}
 
-  const note = objList[strId]
-  const clonedNote = {...note}
-  clonedNote.text = objText[strId].text
-  return(clonedNote)
+export async function getNote(id: string) : Promise<note>{
+  const response = <note[]> await db.send({
+    "operation": "sql",
+    "sql": `
+      SELECT id,__createdtime__ AS datetime, title,text
+      FROM notes.notes
+      WHERE id='${id}'
+    `
+  })
+  // console.log(`getNote(${id}) response:\n`+JSON.stringify(response, null, 2))
+  if(response.length === 0)
+    throw new Error('No such note!')
+  else
+    return response[0]
 }
 
 /**
@@ -120,10 +134,10 @@ export function deleteNote(id: string) : string{
  * Resets dummy data to known state
  */
 const dbResetData = JSON.parse(`[
-  {"title":"My 1st Note","text":"Text for my first note"},
-  {"title":"My 2nd Note","text":"Text for my second note"},
-  {"title":"My 3rd Note","text":"Text for my third note"},
-  {"title":"My 4th Note","text":"Text for my fourth note"}
+  {"title":"My 1st Note","text":"Text for my 1st Note"},
+  {"title":"My 2nd Note","text":"Text for my 2nd Note"},
+  {"title":"My 3rd Note","text":"Text for my 3rd Note"},
+  {"title":"My 4th Note","text":"Text for my 4th Note"}
 ]`)
 
 export async function reset() : Promise<void> {
