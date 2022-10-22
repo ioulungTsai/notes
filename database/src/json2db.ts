@@ -2,6 +2,7 @@ import axios from "axios"
 import fs from "fs"
 import argv from "minimist"
 import chalk from "chalk"
+import * as utils from './utils'
 
 /**
  * json2db takes a script file and operates on HarperDB
@@ -22,16 +23,9 @@ if (!('target' in args) || !('script' in args)) {
 }
 console.log(args);
 
-// Get dbCongfig
-const configPath = './dbconfig.json'
-const config = JSON.parse(fs.readFileSync(configPath).toString())
-const targetConfig = config[args.target]
-console.log(targetConfig);
-
-
-// Set up DB parameters
-const username = targetConfig.username
-const password = targetConfig.password
+// Setup config parameters
+const targetConfig = utils.getDBConfig(args.target)
+const httpConfig = utils.getHttpConfig(targetConfig)
 const url = targetConfig.url
 
 // Set up database script & check it is an array
@@ -41,16 +35,6 @@ if (!Array.isArray(dbScript)) {
   console.log('JSON Script must be an array!')
   console.log('Enclose JSON in square "[]" brackets.')
   process.exit(0)
-}
-
-// Set up http configuration
-const httpConfig = {
-  headers: {
-    "Content-Type": "application/json",
-    "authorization": "Basic "
-      + Buffer.from(`${username}:${password}`).toString('base64'),
-    "cache-control":"no-cache"
-  }
 }
 
 // Loop through the array of scripts
@@ -74,7 +58,3 @@ async function asyncLoop(scripts : Array<unknown>, callback: LooperCallBack) {
   for (let index=0; index < scripts.length; ++index)
     await callback(scripts[index], index)
 }
-
-// Call the database
-// axios.post(url, dbScript, httpConfig)
-//   .then((response) => { console.log(response.data)})
